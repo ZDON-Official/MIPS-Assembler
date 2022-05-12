@@ -212,6 +212,9 @@ vector<string> assembler::run(string input_filename){
 
     bool start = false;
 
+    // create a map for all the labels and their line number
+    createMap(input_filename);
+
     while (getline(Input_file, line)){   
 
 
@@ -277,7 +280,7 @@ string assembler::syscall(string line){
 }
 
 // This  method converts binary string to an integer value
-int binConv(string binary)
+int assembler::binConv(string binary)
 {
     string bin = binary;
 	int decimal = 0;
@@ -292,76 +295,6 @@ int binConv(string binary)
 			continue;
 	}
 	return decimal;
-}
-
-
-//! MAIN -----------------------------------------------
-int main(int argc, char const *argv[])
-{
-    assembler assemble;
-
-    ifstream infile {argv[1]};
-    string input_filename = argv[1];
-    string output_filename = argv[2];
-
-    vector<string> instructions;
-
-    // check if file is not empty
-    if (!infile){
-        cerr << "could not open file: " << argv[1] << endl;
-        exit(1);
-    }
-    else if (argc != 3)
-    {
-        // checks for CL prompt: ./assemble [input file] [initial seed]
-        cerr << "Usage: " << argv[0] << " [input file] [output file]" << endl;
-        exit(1);
-    }
-    
-    infile.close();
-    
-
-    // run the program
-    cout << "WE OFFICIALLY START TESTING THE PROGRAM" << endl;
-    assemble.createMap(input_filename);
-
-    // stores all the instruction for output file
-    instructions = assemble.run(input_filename);
-    int instruction_num;
-    //instructions = assemble.BinaryToHex(instructions);
-
-
-    /*
-    for(int i=0; i < instructions.size(); i++){
-        cout << instructions[i] << endl;
-    }
-    */
-
-    // Write to output file here
-    ofstream outfile;
-
-    outfile.open(output_filename, ios::binary);
-    outfile.clear();
-    cout << "WE ARE HERE"  << endl;
-    
-    for (size_t i = 0; i < instructions.size(); i++)
-    {
-        //outfile << instructions[i] << endl;
-        //cout << instructions[i] << endl;
-        string tmp = instructions[i];
-        //cout << "tmp - " << tmp << endl;
-        cout << assemble.testBintoHex(tmp);
-        instruction_num = binConv(tmp);
-        //this convert the instruction_num into a int
-        //cout << "instruction_num - " << instruction_num << endl;
-        //outfile << instruction_num << endl;
-
-        outfile.write((char *) &instruction_num, sizeof(int));
-    }       
-    
-    outfile.close();
-
-    return 0;
 }
 
 // part of code snippet from geeksforgeeks
@@ -437,7 +370,6 @@ string assembler::branch(string line){
 
     return instruction;
 }
-
 
 string assembler::jump(string line){
     string instruction;
@@ -769,6 +701,28 @@ void assembler::clean(string str){
         }
     }
     cout << "str _" << line << "_" <<endl; 
+}
+
+string assembler::testBintoHex(string str){
+
+    cout << endl;
+    int l = str.size();
+    int s = 0;
+    string hex;
+
+    while (true)
+    {
+        hex += Hex.at(str.substr(s, 4));
+        // cout << str.substr(s, 4) << endl;
+
+        s += 4;
+        if (s == l)
+        {
+            break;
+        }
+    }
+
+    return hex;
 }
 
 #endif
