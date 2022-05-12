@@ -154,28 +154,19 @@ void assembler::createMap(string input_filename){
     bool start = false;
 
     while(getline(Input_file, Line)){
-        // only start counting from "main:"
-
+        // only start counting from "main:" or syscall:
         if (false == start){
 
             if (Line.find("main:") != string::npos || Line.find("syscall:") != string::npos){
                 start = true;
             }
             else{
-                //cout << "else line -" << line << "-" << endl;
                 continue;
             }
         }
 
         Line = remove_space(Line);
 
-        // if (Line.find("main") != string::npos && Line.find_first_of("main:") == 0){
-        //     lineNum = 0;
-        // }
-        // SLIGHT CHANGE HERE TO MAKE THE LABEL MAP, NOT COUNT FROM "MAIN:, BUT FROM ANY LABEL
-        // if (Line.find(":") != string::npos){
-        //     lineNum = 0;
-        // }
         if(Line.empty()){
             continue;
         } else if(Line.find("#") != string::npos){
@@ -185,7 +176,6 @@ void assembler::createMap(string input_filename){
             } 
         }
 
-        // todo - error in line calculation
         size_t found = Line.find(":");
         if (found != string::npos){
             label = Line.substr(0,Line.find(":"));
@@ -212,10 +202,8 @@ void assembler::createMap(string input_filename){
 }
 
 
-// TODO return vector of instructions
-vector<string> assembler::  run(string input_filename){
-
-    cout << "We start running the program" << endl;
+// This method is called from the main to start the parsing and translastion of MIPS code
+vector<string> assembler::run(string input_filename){
 
     ifstream Input_file(input_filename);
 
@@ -241,20 +229,14 @@ vector<string> assembler::  run(string input_filename){
         if(line.empty()){
             continue;
         } else if(line.find("#") != string::npos){
-            //cout << "found a comment" << endl;
-            //line = remove_space(line);
-
-            //cout << "line comment - " << line << endl;
-
             if(line.find_first_of("#") == 0){
                 continue; // just a commnet line
             } else{
                 // code with comment
                 line = line.substr(0, line.find("#")); // remove comment from line
             }
-            //cout << "comment removed - " << line << endl;
         } else if (line.find(":") != string::npos){
-            //cout << "found a label - " << line << endl;
+            // if the line is a label (ex - else:), ignore it
             continue;
         }
 
@@ -279,33 +261,13 @@ vector<string> assembler::  run(string input_filename){
             curLine++;
         } else {
             line = remove_space(line);
-            //cout << "not an inst - " << line << endl;
-
             if(line == "syscall"){
-                cout << "syscall -" << line << "-" << endl;
-
                 output.push_back(syscall(line));
                 curLine++;
             }
         }
-        // else if (line.find("syscall") != string::npos) {
-        //     cout << "syscall -" << line << "-" << endl;
-        //     // cout << line.compare("syscall") << endl;
-        //     // line = remove_space(line);
-        //     // size_t pos = line.find("syscall");
-        //     // cout << "SYSCALL BUG: pos is " << pos << endl;
-        //     // line = line.substr(7);
-        //     // cout << "SYSCALL BUG: line is " << line << endl;
-        //     // if (line.empty()){
-        //     output.push_back(syscall(line));
-        //     // cout << "SYSCALL OCCURED YAY!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-        //     // }
-        //     curLine++;
-        // }
     }
     Input_file.close();
-
-    //output = BinaryToHex(output);
     return output;
 }
 
