@@ -136,8 +136,6 @@ unordered_map<string, char> assembler::Hex{
     {"1111",'F'}
 };
 
-
-
 assembler::assembler(){}
 assembler::assembler(string infile){}
 assembler::~assembler(){}
@@ -200,7 +198,6 @@ void assembler::createMap(string input_filename){
     Input_file.close();
 
 }
-
 
 // This method is called from the main to start the parsing and translastion of MIPS code
 vector<string> assembler::run(string input_filename){
@@ -273,7 +270,6 @@ vector<string> assembler::run(string input_filename){
     Input_file.close();
     return output;
 }
-
 
 string assembler::syscall(string line){
     return "00000000000000000000000000001100";

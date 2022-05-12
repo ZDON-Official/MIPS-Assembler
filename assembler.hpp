@@ -25,7 +25,6 @@ class assembler{
         int curLine = 1;
 
         // private methods
-        //void createMap(string input_filename); // create label map
         string arith(string line);
         string shift(string line);
         string load_save(string line);
@@ -38,21 +37,17 @@ class assembler{
         vector<string> parse(string str);
         vector<string> BinaryToHex(vector<string> input);
         void clean(string str);
+        void createMap(string input_filename); // create label map
 
     public:
         assembler();
         assembler(string infile);
         ~assembler();
         
-        // main methods
-        void createMap(string input_filename); // create label map
         vector<string> run(string input_filename); // will write to output file
 
-        
-        // test methods
-        //void clean(string str);
-        //int binConv(string binary);
-        
+        int binConv(string binary);
+        string testBintoHex(string str);
 };
 
 #endif
