@@ -1,5 +1,5 @@
 EXECS = assemble
-OBJS = assembler.o
+OBJS = Main.cpp assembler.cpp
 #### use next two lines for Mac
 #CC = g++
 #CCFLAGS = -std=c++14 -stdlib=libc++ -g
