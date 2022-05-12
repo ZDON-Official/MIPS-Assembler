@@ -37,6 +37,7 @@ class assembler{
         string DecToBinary(int input, int binNum);
         vector<string> parse(string str);
         vector<string> BinaryToHex(vector<string> input);
+        void clean(string str);
 
     public:
         assembler();
@@ -49,22 +50,9 @@ class assembler{
 
         
         // test methods
-        void clean(string str);
-        string testBintoHex(string str);
+        //void clean(string str);
         //int binConv(string binary);
-
-        // todo - move to private
-        // string arith(string line);
-        // string shift(string line);
-        // string load(string line);
-        // string syscall(string line);
-        // string branch(string line);
-        // string jump(string line);
-        // string special(string line); // this is for jalr and jr
-        // string remove_space(string str);
-        // string DecToBinary(int input, int binNum);
-        // vector<string> parse(string str);
-        // vector<string> BinaryToHex(vector<string> input);
+        
 };
 
 #endif

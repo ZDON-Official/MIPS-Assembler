@@ -276,31 +276,21 @@ string assembler::syscall(string line){
     return "00000000000000000000000000001100";
 }
 
-
-//TODO - error here
+// This  method converts binary string to an integer value
 int binConv(string binary)
 {
-    //cout << "string - " << binary << endl;
     string bin = binary;
 	int decimal = 0;
 	int size = bin.size();
 	
-    //cout << "size " << size << endl;
 	for (int counter = 0; counter < size; counter++)
 	{
-        // cout << "counter " << counter << endl;
 		if (bin[counter] == '1'){
-            // cout << "power " <<  pow(2.0,size-counter-1) << endl;
 			decimal = decimal + (1 << (size-counter-1));
-            //pow(2.0,size-counter-1));
         }
 		else
-            // cout << "in else  -  ";
-            // cout << "binary[counter] - " << bin[counter] << endl;
 			continue;
 	}
-    
-    //1 << 4
 	return decimal;
 }
 
@@ -372,27 +362,6 @@ int main(int argc, char const *argv[])
     outfile.close();
 
     return 0;
-}
-
-// tester method
-string assembler::testBintoHex(string str){
-
-    cout << endl;
-    int l = str.size();
-    int s = 0;
-    string hex;
-
-    while(true){
-        hex += Hex.at(str.substr(s, 4));
-        //cout << str.substr(s, 4) << endl;
-
-        s += 4;
-        if (s == l){
-            break;
-        }
-    }
-
-    return hex;
 }
 
 // part of code snippet from geeksforgeeks
@@ -469,7 +438,7 @@ string assembler::branch(string line){
     return instruction;
 }
 
-// error in here
+
 string assembler::jump(string line){
     string instruction;
     string target;
@@ -507,6 +476,7 @@ string assembler::jump(string line){
     return instruction;
 }
 
+// For jalr and jr
 string assembler::special(string line){
     string instruction;
     string rs;
@@ -527,8 +497,6 @@ string assembler::special(string line){
     for (size_t i = 0; i < var.size(); i++){
         // is a register
         if(var.at(i).find("$") != string::npos){
-            // removes the $ sign
-            //! not neccesary as we can add the $ in out unordered_map
             string tmp = var.at(i).substr(var.at(i).find_first_not_of("$"));
             if(reg.find(tmp) != reg.end()){
                 // key in reg
@@ -560,8 +528,6 @@ string assembler::load_save(string line){
     string rt;
     string offset;
     vector<string> regis(2, "");
-
-    //cout << line << " - insreuction" << endl;
 
     line = remove_space(line);
 
@@ -598,16 +564,10 @@ string assembler::load_save(string line){
 
     base = regis[1];
 
-    // TODO - remove spaces
-    instruction = opc + base + rt + offset;
-
-    //! ----------------------------------------------------------
-    //cout << "instruction - " << instruction << endl;
-    //! ----------------------------------------------------------
+   instruction = opc + base + rt + offset;
 
     return instruction;
 }
-
 
 string assembler::shift(string line){
     string instruction;
@@ -672,8 +632,6 @@ string assembler::arith(string line) {
 
     // loop through the var vector
     for (size_t i = 0; i < var.size(); i++){
-        //cout << var.at(i) << endl;
-
         // is a register
         if(var.at(i).find("$") != string::npos){
             string tmp = var.at(i).substr(var.at(i).find_first_not_of("$"));
@@ -758,12 +716,11 @@ string assembler::arith(string line) {
     return instruction;
 }
 
-// found online
 string assembler::remove_space(string str){
     str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
     return str;
 }
- // also found online
+
 vector<string> assembler::parse(string str){
     vector<string> temp;
 
@@ -777,7 +734,6 @@ vector<string> assembler::parse(string str){
     
     return temp;
 }
-
 
 // from GeeksforGeeks, added binNUM as a parameter
 string assembler::DecToBinary(int n, int binNum){
@@ -795,8 +751,6 @@ string assembler::DecToBinary(int n, int binNum){
 
     return binaryOutput;
 }
-
-
 
 void assembler::clean(string str){
     string line = str;
@@ -816,6 +770,5 @@ void assembler::clean(string str){
     }
     cout << "str _" << line << "_" <<endl; 
 }
-
 
 #endif
